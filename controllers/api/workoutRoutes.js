@@ -29,6 +29,13 @@ router.put('/:id', async (req, res) => {
 // Route is going to create a new workout
 router.post('/', async (req, res) => {
     try {
+        db.Workout.insert(req.body, (error, data) => {
+            if (error) {
+              res.send(error);
+            } else {
+              res.send(data);
+            }
+          });
 
     } catch(err){
         res.status(500).json(err)
