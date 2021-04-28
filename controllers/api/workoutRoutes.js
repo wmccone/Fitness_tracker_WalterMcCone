@@ -3,16 +3,16 @@ const db = require("../../models");
 
 // Route is going to get the last workout
 router.get('/', async (req, res) => {
-    try { 
+    try {
         db.Workout.find().sort({ date: -1 }, (err, found) => {
             console.log(found)
             if (err) {
-              console.log(err);
+                console.log(err);
             } else {
-              res.json(found[0]);
+                res.json(found[0]);
             }
-          });
-    } catch(err){
+        });
+    } catch (err) {
         res.status(500).json(err)
     }
 });
@@ -20,8 +20,45 @@ router.get('/', async (req, res) => {
 // Route is going to add an exercise to the workout
 router.put('/:id', async (req, res) => {
     try {
+        //Going to pull info for the current workout
+        const currentWorkout = await db.Workout.findOne(
+            {
+                _id: mongojs.ObjectId(req.params.id)
+            },
+            (error, data) => {
+                if (error) {
+                    res.send(error);
+                } else {
+                }
+            }
+        );
+        console.log(currentWorkout)
+        //pushes the new exercise to the current workout
+        const exerciseArr = currentWorkout.exercises
+        exerciseArr.push(req.body)
+        //Going to update the exercise section in the current workout
 
-    } catch(err){
+        await db.Workout.update(
+            {
+                _id: mongojs.ObjectId(req.params.id)
+            },
+            {
+                $set: {
+                    exercises: exerciseArr,
+                }
+            },
+            (error, data) => {
+                if (error) {
+                    res.send(error);
+                } else {
+                    res.send(data);
+                }
+            }
+        );
+
+
+
+    } catch (err) {
         res.status(500).json(err)
     }
 });
@@ -31,13 +68,13 @@ router.post('/', async (req, res) => {
     try {
         db.Workout.insert(req.body, (error, data) => {
             if (error) {
-              res.send(error);
+                res.send(error);
             } else {
-              res.send(data);
+                res.send(data);
             }
-          });
+        });
 
-    } catch(err){
+    } catch (err) {
         res.status(500).json(err)
     }
 });
@@ -46,7 +83,7 @@ router.post('/', async (req, res) => {
 router.get('/range', async (req, res) => {
     try {
 
-    } catch(err){
+    } catch (err) {
         res.status(500).json(err)
     }
 });
