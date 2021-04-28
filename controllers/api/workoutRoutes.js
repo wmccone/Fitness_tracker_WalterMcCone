@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {Workout, Exercise} = require("../models");
+const {Workout, Exercise} = require("../../models");
 
 // Route is going to get the last workout
 router.get('/', async (req, res) => {
