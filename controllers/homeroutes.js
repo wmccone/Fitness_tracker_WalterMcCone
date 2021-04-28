@@ -1,6 +1,6 @@
 const path = require('path');
 const router = require("express").Router();
-const {Workout, Exercise} = require("../models");
+const db = require("../models");
 
 router.get('/', async (req, res) => {
     try {

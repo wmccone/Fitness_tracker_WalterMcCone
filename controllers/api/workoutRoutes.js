@@ -1,10 +1,17 @@
 const router = require("express").Router();
-const {Workout, Exercise} = require("../../models");
+const db = require("../../models");
 
 // Route is going to get the last workout
 router.get('/', async (req, res) => {
-    try {
-
+    try { 
+        db.Workout.find().sort({ date: -1 }, (err, found) => {
+            console.log(found)
+            if (err) {
+              console.log(err);
+            } else {
+              res.json(found[0]);
+            }
+          });
     } catch(err){
         res.status(500).json(err)
     }
