@@ -2,19 +2,13 @@ const router = require("express").Router();
 const { Workout, Exercise } = require("../../models");
 
 // Route is going to get the last workout
-router.get('/', async (req, res) => {
-    try {
-        await Workout.find().sort({ date: -1 }, (err, found) => {
-            console.log(found)
-            if (err) {
-                console.log(err);
-            } else {
-                res.json(found);
-            }
-        });
-    } catch (err) {
-        res.status(500).json(err)
-    }
+router.get('/', (req, res) => {
+
+    Workout.find().sort({ date: -1 })
+        .then(data => {
+            console.log(data.exercises)
+            res.send(data)
+        })
 });
 
 // Route is going to add an exercise to the workout
