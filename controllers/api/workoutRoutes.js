@@ -1,40 +1,35 @@
 const router = require("express").Router();
-const { Workout, Exercise } = require("../../models");
+const db = require("../../models");
 
 // Route is going to get the last workout
 router.get('/', (req, res) => {
-
-    Workout.find().sort({ date: -1 })
-        .then(data => {
-            console.log(data.exercises)
+    
+    db.Workout.find().sort( { date: -1 } )
+        .then((data) => {
+        
+            console.log(data)
             res.send(data)
+        })
+        .catch(err =>{
+            console.log(err)
         })
 });
 
 // Route is going to add an exercise to the workout
 router.put('/:id', async (req, res) => {
-    try {
+ 
         //Going to pull info for the current workout
-        const currentWorkout = await db.Workout.findOne(
-            {
-                _id: mongojs.ObjectId(req.params.id)
-            },
-            (error, data) => {
-                if (error) {
-                    res.send(error);
-                } else {
-                }
-            }
-        );
+        const currentWorkout = await db.Workout.findOne({_id: req.params.id});
         console.log(currentWorkout)
         //pushes the new exercise to the current workout
         const exerciseArr = currentWorkout.exercises
+        console.log(exerciseArr)
         exerciseArr.push(req.body)
         //Going to update the exercise section in the current workout
 
         await db.Workout.update(
             {
-                _id: mongojs.ObjectId(req.params.id)
+                _id: req.params.id
             },
             {
                 $set: {
@@ -50,11 +45,6 @@ router.put('/:id', async (req, res) => {
             }
         );
 
-
-
-    } catch (err) {
-        res.status(500).json(err)
-    }
 });
 
 // Route is going to create a new workout
