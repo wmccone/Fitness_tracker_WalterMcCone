@@ -66,7 +66,7 @@ router.put('/:id', async (req, res) => {
 // Route is going to create a new workout
 router.post('/', (req, res) => {
     console.log(req.body)
-    db.Workout.create(req.body)
+    db.Workout.insert(req.body)
         .then((data) => {
 
             console.log(data)
@@ -89,9 +89,13 @@ router.get('/range', async (req, res) => {
         }
     ])
         .then((data) => {
-
-            console.log(data)
-            res.send(data)
+            const sevenDayArr = []
+            const endPoint = data.length - 8
+            for(let i = (data.length -1); i>endPoint; i--){
+                sevenDayArr.unshift(data[i])
+            }
+            console.log(sevenDayArr)
+            res.send(sevenDayArr)
         })
         .catch(err => {
             console.log(err)
