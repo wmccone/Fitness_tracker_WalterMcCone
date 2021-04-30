@@ -65,8 +65,8 @@ router.put('/:id', async (req, res) => {
 
 // Route is going to create a new workout
 router.post('/', (req, res) => {
-    console.log(req.body)
-    db.Workout.insert(req.body)
+    console.log("line 68 workout routes," + req.body)
+    db.Workout.create({})
         .then((data) => {
 
             console.log(data)
