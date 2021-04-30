@@ -81,11 +81,22 @@ router.post('/', (req, res) => {
 
 //Route is going to get the data for workouts in range to add to chart.js
 router.get('/range', async (req, res) => {
-    try {
+    db.Workout.aggregate([
+        {
+            $set: {
+                totalDuration: { $sum: "$exercises.duration" }
+            }
+        }
+    ])
+        .then((data) => {
 
-    } catch (err) {
-        res.status(500).json(err)
-    }
+            console.log(data)
+            res.send(data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
 });
 
 module.exports = router;
