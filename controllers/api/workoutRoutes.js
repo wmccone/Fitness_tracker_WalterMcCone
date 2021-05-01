@@ -19,16 +19,6 @@ router.get('/', (req, res) => {
             console.log(err)
         })
 
-    // db.Workout.find()
-    //     .sort({ date: -1 })
-    //     .then((data) => {
-
-    //         console.log(data)
-    //         res.send(data)
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //     })
 });
 
 // Route is going to add an exercise to the workout
